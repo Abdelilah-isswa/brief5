@@ -6,6 +6,7 @@ async function getdata(){
     try{console.log("1") 
         const response= await fetch(url);
         const data = await response.json();
+        console.log(data)
        return data
     }catch(error){
         console.error(error.message);
@@ -34,7 +35,10 @@ if(index<12){
     button.style.backgroundColor="blue"
     document.body.append(button)
   //////////load more   
+   
 button.addEventListener("click",()=>{
+   
+            button.remove();
     page++;
     url=`https://debuggers-games-api.duckdns.org/api/games?page=${page}`
      getdata().then(newdata =>{
@@ -43,15 +47,20 @@ button.addEventListener("click",()=>{
                 creatgamecard(game)
                 
             }
+           
      })
+     document.body.append(button)
     })
+    
+
 //     console.log(data.next)
 //    data.page= page
 //     console.log(data.page)
 //     getdata();
 })
+}
 
-})
+)
 
 
 ///card content
@@ -59,13 +68,13 @@ function creatgamecard(game){
 let body =document.body
     let like = document.createElement("div")
    like.textContent = "♥";
-like.style.color = "red";
-like.style.backgroundColor = "white";
-like.style.border = "none";
-like.style.borderRadius = "50%";
-like.style.width = "40px";
-like.style.height = "40px";
-like.style.fontSize = "20px";
+
+
+
+
+
+
+like.className="border-2  border-blue-500 bg-black-500 rounded h-5 w-1 text-white-500 "
 
 
     let container =document.createElement("div")
@@ -82,6 +91,7 @@ container.style.margin="10px"
 
 let img= document.createElement("img")
 img.src=imgurl;
+img.className =" "
 
 
  container.append(img)
