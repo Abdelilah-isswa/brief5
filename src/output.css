@@ -558,6 +558,10 @@ video {
   display: flex;
 }
 
+.hidden {
+  display: none;
+}
+
 .h-8 {
   height: 2rem;
 }
@@ -618,6 +622,11 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-amber-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(251 191 36 / var(--tw-bg-opacity, 1));
 }
 
 .py-2 {
