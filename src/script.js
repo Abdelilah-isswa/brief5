@@ -13,22 +13,31 @@ async function getdata(){
 }
 let count = 12;
 getdata().then(data=>{
+ data.results.forEach((game) => {
+    //append image
 let body =document.body
 
     let container =document.createElement("div")
 container.style.backgroundColor="red"
 container.style.height="200px"
+container.style.margin="10px"
 
 
 
- let imgurl = data.results[0].background_image;
+ let imgurl = game.background_image;
 
 let img= document.createElement("img")
 img.src=imgurl;
-
-
+/// append name
+ container.append(img)
   body.append(container)
-  container.append(img)
+ 
+  
+  console.log(data)
+ 
+   
+    
+  });
   //////////
 
 
