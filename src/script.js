@@ -1,12 +1,20 @@
-// let proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-let url ="https://simplonline-v3-prod.s3.eu-west-3.amazonaws.com/media/file/txt/filteredgames-690b33c424e7a033393285.txt"
-// let finelurl = proxyUrl + url
+
+let url ="https://debuggers-games-api.duckdns.org/api/games"
+
 async function getdata(){
-    try{ const response= await fetch(url);
-        const data = await response.text();
-        console.log( data)
+    try{console.log("1") 
+        const response= await fetch(url);
+        const data = await response.json();
+       return data
     }catch(error){
         console.error(error.message);
     }
 }
-getdata();
+getdata().then(data=>{
+ console.log("2")
+ 
+  console.log(data)
+  //////////
+
+
+})
