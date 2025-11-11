@@ -144,15 +144,7 @@ poplike.textContent = "♥";
         // Create popup
         
         about.className="font-bold"
-        station.className = "font-bo
-819
-  background-color: rgb(59 130 246 / var(--tw-bg-opacity, 1));
-820
-}
-821
-​
-822
-.bg-gray-200 {ld"
+        station.className = "font-bold"
        rating.className = "font-bold"
         imgpopup.src = game.background_image
         
