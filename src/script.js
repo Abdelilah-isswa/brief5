@@ -4,10 +4,10 @@ let url = "https://debuggers-games-api.duckdns.org/api/games"
 let page = 1;
 async function getdata() {
     try {
-        console.log("1")
+        
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data)
+        
         return data
     } catch (error) {
         console.error(error.message);
@@ -16,10 +16,10 @@ async function getdata() {
 
 let count = 12;
 getdata().then(data => {
-
+console.log(data)
     data.results.forEach((game, index) => {
         //append image
-        console.log(index)
+      
         if (index < 12) {
             creatgamecard(game);
 
@@ -30,10 +30,8 @@ getdata().then(data => {
 
 
     });
-    let button = document.createElement("button")
-    button.style.height = "20px"
-    button.style.width = "50px"
-    button.style.backgroundColor = "blue"
+    let button = document.createElement("div")
+button.className = "h-8 w-8 bg-black text-white rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-200 shadow flex items-center justify-center";button.textContent="click"
     document.body.append(button)
     //////////load more   
 
@@ -77,7 +75,7 @@ like.textContent = "♥";
     name.textContent = game.name
 
         container.className="bg-black  text-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 relative"
-    console.log(game)
+   
    
 container.className += " m-4"
 
@@ -87,8 +85,8 @@ container.className += " m-4"
     let img = document.createElement("img")
     img.src = imgurl;
     img.className = " "
-    console.log("1")
-    console.log(game.name)
+    
+   
 
     container.append(img)
     container.append(name)
@@ -124,15 +122,15 @@ poplike.textContent = "♥";
         //let editure = document.createElement("div")
         //
 
-        console.log("2")
+        
         ////paltformes
         game.platforms.forEach(x => {
             let platform1 = document.createElement("span");
             platform1.textContent = x.platform.name
-            console.log(x.platform.name)
+           
              stationcontent.appendChild(platform1)
         })
-        console.log(game.platforms[0].platform.name)
+
         //editure.textContent ="Éditeur / Studio"
         //editure.className="font-bold"
         text_datesortie.className = "font-bold"
@@ -172,7 +170,22 @@ poplike.textContent = "♥";
         blure.addEventListener("click", closeModal);
 
 
-        console.log(game)
+      
 
     });
+}
+
+
+
+///////////////////
+
+let input = document.querySelector("input")
+let inputvalue =''
+input.addEventListener("input",(e)=>{
+     inputvalue= e.target.value
+   search()
+})
+function search(){
+    console.log(game)
+console.log(inputvalue)
 }
