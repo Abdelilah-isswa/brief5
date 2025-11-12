@@ -7,7 +7,7 @@ async function getdata() {
         
         const response = await fetch(url);
         const data = await response.json();
-        
+       
         return data
     } catch (error) {
         console.error(error.message);
@@ -64,6 +64,7 @@ button.className = "h-8 w-8 bg-black text-white rounded-lg hover:bg-gray-800 foc
 
 ///card content
 function creatgamecard(game) {
+  
     let body = document.body
     let like = document.createElement("div")
    
@@ -179,13 +180,46 @@ poplike.textContent = "♥";
 
 ///////////////////
 
-let input = document.querySelector("input")
+let inputs = document.querySelectorAll("input")
 let inputvalue =''
+inputs.forEach(input=>{
 input.addEventListener("input",(e)=>{
      inputvalue= e.target.value
-   search()
+     if(inputvalue.length>1){
+searching()
+     }
+   
 })
-function search(){
-    console.log(game)
-console.log(inputvalue)
+
+})
+
+
+
+
+
+   // console.log(game)
+console.log()
+
+async function searching(){
+    console.log(inputvalue)
+
+try{
+    let url2 =`https://debuggers-games-api.duckdns.org/api/games?search=${inputvalue}`
+
+    const response = await fetch(url2);
+        const data = await response.json();
+        console.log( "search resault",data)
+        return data
+}catch(error){
+  console.error(error.message);
 }
+searching().then(
+    data=>{
+        console.log(data.name)
+    }
+)
+
+
+}
+
+
