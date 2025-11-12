@@ -16,10 +16,10 @@ async function getdata() {
 
 let count = 12;
 getdata().then(data => {
-console.log(data)
+
     data.results.forEach((game, index) => {
         //append image
-      
+    //   console.log(game)
         if (index < 12) {
             creatgamecard(game);
 
@@ -198,7 +198,7 @@ searching()
 
 
    // console.log(game)
-console.log()
+
 
 async function searching(){
     console.log(inputvalue)
@@ -208,18 +208,34 @@ try{
 
     const response = await fetch(url2);
         const data = await response.json();
-        console.log( "search resault",data)
-        return data
+        let y =data.results
+        cleargamecontainer()
+        y.forEach((x,i)=>{
+            console.log(i)
+            if(i<12){
+                console.log(x)
+                  creatgamecard(x);
+            }
+           
+        })
+        
+     //  creatgamecard(data);
+        
 }catch(error){
   console.error(error.message);
 }
-searching().then(
-    data=>{
-        console.log(data.name)
-    }
-)
 
 
 }
 
 
+function cleargamecontainer(){
+
+    const gameCards = document.querySelectorAll('[class*="bg-black"][class*="rounded-xl"]');
+    gameCards.forEach(card => {
+        card.remove();
+    });
+
+
+}
+    
