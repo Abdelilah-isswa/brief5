@@ -67,7 +67,7 @@ function creatgamecard(game) {
     let body = document.body
     let like = document.createElement("div")
    
-    like.className = "bg-pink-500 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-pink-600 transition-colors absolute top-2 right-2 z-10";
+    like.className = " bg-gradient-to-r from-[#D9D9D9] to-[#D9D9D9]   text-white p-2 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-pink-600 transition-colors absolute top-2 right-2 z-10";
     like.textContent = "♥";
 
     let container = document.createElement("div")
@@ -79,7 +79,7 @@ function creatgamecard(game) {
     container.className = "bg-black text-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 relative"
     
     // Mobile: single column, Tablet: 2 columns, Desktop: 3 columns
-    container.className += " w-full sm:w-64 md:w-72 lg:w-80 m-2"
+    container.className += " w-full sm:w-64 md:w-72 lg:w-80  my-4 "
 
     let imgurl = game.background_image;
     let img = document.createElement("img")
@@ -94,7 +94,7 @@ function creatgamecard(game) {
     addToGameGrid(container);
     
     ////////////////////////////////////////////////
-    // Your existing popup code remains the same
+   
     container.addEventListener("click", () => {
         let poplike = document.createElement("div")
         poplike.className = "bg-pink-500 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-pink-600 transition-colors";
@@ -168,12 +168,12 @@ function initializeGameGrid() {
     // Create main games container
     const gamesContainer = document.createElement('div');
     gamesContainer.id = 'gamesGridContainer';
-    gamesContainer.className = "container mx-auto px-4 py-6";
+    gamesContainer.className = "container mx-auto px-6  py-6";
     
     // Create responsive grid
     const gamesGrid = document.createElement('div');
     gamesGrid.id = 'gamesGrid';
-    gamesGrid.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-items-center";
+    gamesGrid.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2  lg:grid-cols-3  gap-[30px] md:gap-[40px] lg:gap-[50px] justify-items-center";
     
     gamesContainer.appendChild(gamesGrid);
     document.body.appendChild(gamesContainer);
