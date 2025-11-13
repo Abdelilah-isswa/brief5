@@ -66,7 +66,15 @@ button.className = "h-8 w-8 bg-black text-white rounded-lg hover:bg-gray-800 foc
 function creatgamecard(game) {
     let body = document.body
     let like = document.createElement("div")
-   
+     
+/////
+
+
+
+
+
+
+
     like.className = " bg-gradient-to-r from-[#D9D9D9] to-[#D9D9D9]   text-white p-2 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-pink-600 transition-colors absolute top-2 right-2 z-10";
     like.textContent = "♥";
 
