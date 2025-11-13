@@ -320,3 +320,62 @@ async function searching2() {
 
 
     })
+
+    /////////////////////////////////////////add games to favorit
+
+       document.addEventListener('DOMContentLoaded', function() {
+           
+            let burgers = document.querySelectorAll(".fa");
+
+          
+            burgers.forEach((burger, index) => {
+                burger.addEventListener("click", function(event) {
+                   event.stopPropagation(); 
+               
+                    
+                    // Remove existing popup if any
+                    const existingPopup = document.querySelector('.favorites-popup');
+                    if (existingPopup) {
+                        existingPopup.remove();
+                    }
+                    
+                    // Create popup
+                    let favpop = document.createElement("div");
+                    
+                    favpop.className = "favorites-popup fixed inset-0 flex items-center justify-center  z-50";
+                    
+                    // Create backdrop
+                    // const backdrop = document.createElement("div");
+                    // backdrop.className = "absolute inset-0 ";
+                    
+                    // Create popup content
+                    const popupContent = document.createElement("div");
+                    popupContent.className = "bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full mx-4  text-center";
+                    popupContent.innerText = "favorit"
+                    
+                    // Append elements
+                   // favpop.appendChild(backdrop);
+                    favpop.appendChild(popupContent);
+                    document.body.appendChild(favpop);
+                    
+                    // Add close functionality
+                    const closeBtn = popupContent.querySelector('.close-popup');
+                    closeBtn.addEventListener('click', function() {
+                        favpop.remove();
+                    });
+                    
+                    // Close when clicking backdrop
+                    // backdrop.addEventListener('click', function() {
+                    //     favpop.remove();
+                    // });
+                });
+            });
+            
+            // Close popup when clicking anywhere on the page
+            document.addEventListener('click', function() {
+                const existingPopup = document.querySelector('.favorites-popup');
+                if (existingPopup) {
+                    existingPopup.remove();
+                }
+            });
+        })
