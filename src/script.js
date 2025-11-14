@@ -10,7 +10,7 @@ async function getdata() {
         
         const response = await fetch(url);
         const data = await response.json();
-      showgener(data);
+      
         return data
     } catch (error) {
         console.error(error.message);
@@ -84,16 +84,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     
     genreFilter.addEventListener('change', function() {
-        console.log("🎯 Selected genre:", this.value);
-        
-        if (this.value === "action") {
-            console.log("🎮 Action games selected!");
-        } else if (this.value === "rpg") {
-            console.log("⚔️ RPG games selected!");
-        } else if (this.value === "") {
-            console.log("❌ No genre selected");
-        }
-    });
+        const selectedGenre =this.value;
+        console.log(" Selected genre:", selectedGenre);
+        filterGamesByGenre(selectedGenre);
+    //     if (this.value === "action") {
+    //         console.log("🎮 Action games selected!");
+    //     } else if (this.value === "rpg") {
+    //         console.log("⚔️ RPG games selected!");
+    //     } else if (this.value === "") {
+    //         console.log("❌ No genre selected");
+    //     }
+     });
     
     console.log("✅ Event listener added successfully");
 });
@@ -628,23 +629,121 @@ function removeLoadMoreButton() {
       //   })
 
 let x=1;
-     function showgener(data){
-        let y =data.results
-       let z= y.map((x)=>{
-          return x.genres 
-        })
-       let c=  z.map((x)=>{
-           return  x
-        })
-        let allname=[];
-            for(let i=0;i<c.length;i++){
-                for(let j=0;j<c[i].length;j++){
+//      function showgener(selectedGenre){
+
+
+
+//         getdata().then(data=>{
+//              cleargamecontainer();
+//         removeLoadMoreButton();
+
+//           const filteredGames = data.results.filter(game => {
+//             return hasGenre(game, selectedGenre);
+//         });
+//                         console.log(`Found ${filteredGames.length} games with genre: ${selectedGenre}`);
+//         })
+
+//          filteredGames.forEach((game, index) => {
+//              if (index < 12) {
+//                  creatgamecard(game);
+//              }
+//          });
+    
+//          // Re-add load more button if needed
+//          if (filteredGames.length > 12) {
+//              document.body.append(button);
+//          }
+
+
+// //         let y =data.results
+// //        let z= y.map((x)=>{
+// //           return x.genres 
+// //         })
+// //        let c=  z.map((x)=>{
+// //            return  x
+// //         })
+// //         let allname=[];
+// //             for(let i=0;i<c.length;i++){
+// //                 for(let j=0;j<c[i].length;j++){
                  
                    
-                   allname.push(c[i][j].name)
-                }
-            }
+// //                    allname.push(c[i][j].name)
+// //                 }
+// //             }
 
-return allname[2]
+// // return allname[2]
   
-     }
+//      }
+
+
+
+
+////////filter
+
+
+// Function to filter games by genre
+function filterGamesByGenre(selectedGenre) {
+    // First, get your game data (you might need to fetch it again or use existing data)
+    getdata().then(data => {
+        // Clear current games
+        cleargamecontainer();
+        removeLoadMoreButton();
+        
+        // Filter games based on selected genre
+        const filteredGames = data.results.filter(game => {
+            return hasGenre(game, selectedGenre);
+        });
+        
+        console.log(`Found ${filteredGames.length} games with genre: ${selectedGenre}`);
+        
+        // Display filtered games
+        filteredGames.forEach((game, index) => {
+            
+                creatgamecard(game);
+            
+        });
+        
+        // Re-add load more button if needed
+        if (filteredGames.length > 5) {
+            document.body.append(button);
+        }
+    });
+}
+
+// Helper function to check if a game has the selected genre
+function hasGenre(game, selectedGenre) {
+    if (!selectedGenre) return true; // Show all if no genre selected
+    
+    let gameGenres = getAllGenreNames(game);
+    
+    // Check if the selected genre exists in game's genres
+    return gameGenres.some(genreName => 
+        genreName.toLowerCase() === selectedGenre.toLowerCase()
+    );
+}
+
+// Updated version of your showgener function that returns ALL genre names
+function getAllGenreNames(game) {
+    if (!game.genres || !Array.isArray(game.genres)) {
+        return [];
+    }
+    
+    return game.genres.map(genre => genre.name.toLowerCase());
+}
+
+// Alternative: Get all unique genres from all games
+function getAllUniqueGenres(data) {
+    let allGenres = new Set();
+    
+    data.results.forEach(game => {
+        if (game.genres && Array.isArray(game.genres)) {
+            game.genres.forEach(genre => {
+                if (genre.name) {
+                    allGenres.add(genre.name.toLowerCase());
+                }
+            });
+        }
+    });
+    
+    return Array.from(allGenres);
+}
