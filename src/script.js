@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ratingFilter.addEventListener('change', function(){
         const selectedFilter = this.value;
         console.log(" Selected rating:", selectedFilter);
-        filterGamesByGenre(selectedFilter);
+        filterGamesByRating(selectedFilter);
     });
     
     // Genre filter event listener
@@ -874,64 +874,54 @@ function getAllUniquePlatforms(data) {
 
 
 function filterGamesByRating(selectedRating) {
-    getdata().then(data => {
-        cleargamecontainer();
-        removeLoadMoreButton();
-        
-        const filteredGames = data.results.filter(game => {
-           console.log("filter:" + game)
-            return hasRating(game, selectedRating);
-        });
-         console.log(filteredGames)
-        console.log(`Found ${filteredGames.length} games with rating: ${selectedRating}+`);
-        
-        filteredGames.forEach((game) => {
-            console.log("this")
-            console.log( game)
-            creatgamecard(game);
-        });
-
+     getdata().then(data => {
+         cleargamecontainer();
+         removeLoadMoreButton();
       
-            document.body.append(button);
-       
-    });
+         const filteredGames = data.results.filter(game => {
+            console.log("filter:" + game)
+             return hasRating(game, selectedRating);
+         });
+          console.log(filteredGames)
+         console.log(`Found ${filteredGames.length} games with rating: ${selectedRating}+`);
+      
+         filteredGames.forEach((game) => {
+             console.log("this")
+             creatgamecard(game);
+           
+         });
+    
+             document.body.append(button);
+     
+     });
+ }
+ function hasRating(game, selectedRating) {
+     if (!selectedRating) return true; // Show all if no rating selected
+  
+     // Convert selectedRating to number for comparison
+     const minRating = parseFloat(selectedRating);
+  
+     // Check if game has rating and meets the minimum
+     if (!game.rating) return false;
+  
+     return game.rating >= minRating;
+ }
+ // Event listener for rating filter
+ ratingFilter.addEventListener('change', function(){
+     const selectedRating = this.value;
+     console.log("Selected rating:", selectedRating);
+     filterGamesByRating(selectedRating);
+ });
+ // Function to get all unique ratings from games (for debugging)
+ function getAllUniqueRatings(data) {
+     let allRatings = new Set();
+  
+     data.results.forEach(game => {
+         if (game.rating !== null && game.rating !== undefined) {
+             allRatings.add(game.rating);
+         }
+     });
+  
+     return Array.from(allRatings).sort((a, b) => a - b);
 }
 
-function hasRating(game, selectedRating) {
-    if (!selectedRating) return true; // Show all if no rating selected
-    
-
-
-
-
-
-
-
-    // Convert selectedRating to number for comparison
-    const minRating = parseFloat(selectedRating);
-    
-    // Check if game has rating and meets the minimum
-    if (!game.rating) return false;
-    
-    return game.rating >= minRating;
-}
-
-// Event listener for rating filter
-ratingFilter.addEventListener('change', function(){
-    const selectedRating = this.value;
-    console.log("Selected rating:", selectedRating);
-    filterGamesByRating(selectedRating);
-});
-
-// Function to get all unique ratings from games (for debugging)
-function getAllUniqueRatings(data) {
-    let allRatings = new Set();
-    
-    data.results.forEach(game => {
-        if (game.rating !== null && game.rating !== undefined) {
-            allRatings.add(game.rating);
-        }
-    });
-    
-    return Array.from(allRatings).sort((a, b) => a - b);
-}
