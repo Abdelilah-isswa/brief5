@@ -10,7 +10,7 @@ async function getdata() {
         
         const response = await fetch(url);
         const data = await response.json();
-       
+      showgener(data);
         return data
     } catch (error) {
         console.error(error.message);
@@ -19,7 +19,7 @@ async function getdata() {
 
 let count = 12;
 getdata().then(data => {
-
+console.log(data.results[0].genres[0].name)
     data.results.forEach((game, index) => {
         //append image
     //   console.log(game)
@@ -70,7 +70,36 @@ button.className = "h-8 w-8 bg-black text-white rounded-lg hover:bg-gray-800 foc
 )
 
 
-///card content
+///////////////the filter part genre
+
+document.addEventListener('DOMContentLoaded', function() {
+    const genreFilter = document.getElementById('genreFilter');
+    
+    // Check if element exists
+    if (!genreFilter) {
+        console.error("❌ genreFilter element not found!");
+        return;
+    }
+    
+    
+    
+    genreFilter.addEventListener('change', function() {
+        console.log("🎯 Selected genre:", this.value);
+        
+        if (this.value === "action") {
+            console.log("🎮 Action games selected!");
+        } else if (this.value === "rpg") {
+            console.log("⚔️ RPG games selected!");
+        } else if (this.value === "") {
+            console.log("❌ No genre selected");
+        }
+    });
+    
+    console.log("✅ Event listener added successfully");
+});
+
+
+////////////////////////////end part filter
 
 let likedGames = JSON.parse(localStorage.getItem('likedGames')) || [];
 console.log(likedGames)
@@ -388,9 +417,11 @@ function clearGameGrid() {
 
 // Initialize grid when page loads
 document.addEventListener('DOMContentLoaded', function() {
+    
+ 
     initializeGameGrid();
 });
-
+/////////////////////////////////filter
 
 //////////////////////////end 
 
@@ -596,5 +627,24 @@ function removeLoadMoreButton() {
              });
       //   })
 
+let x=1;
+     function showgener(data){
+        let y =data.results
+       let z= y.map((x)=>{
+          return x.genres 
+        })
+       let c=  z.map((x)=>{
+           return  x
+        })
+        let allname=[];
+            for(let i=0;i<c.length;i++){
+                for(let j=0;j<c[i].length;j++){
+                 
+                   
+                   allname.push(c[i][j].name)
+                }
+            }
 
-      
+return allname[2]
+  
+     }
