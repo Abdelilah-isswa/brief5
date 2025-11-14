@@ -19,7 +19,7 @@ async function getdata() {
 
 let count = 12;
 getdata().then(data => {
-console.log(data.results[0].genres[0].name)
+
     data.results.forEach((game, index) => {
         //append image
     //   console.log(game)
@@ -74,29 +74,83 @@ button.className = "h-8 w-8 bg-black text-white rounded-lg hover:bg-gray-800 foc
 
 document.addEventListener('DOMContentLoaded', function() {
     const genreFilter = document.getElementById('genreFilter');
+    const platformsFilter = document.getElementById('platformsFilter');
+    const ratingFilter = document.getElementById('ratingFilter');
+    const applyFiltersBtn = document.getElementById('applyFiltersBtn');
     
-    // Check if element exists
+    // Check if elements exist
     if (!genreFilter) {
         console.error("❌ genreFilter element not found!");
         return;
     }
     
+    if (!platformsFilter) {
+        console.error("❌ platformsFilter element not found!");
+        return;
+    }
     
+    if (!ratingFilter) {
+        console.error("❌ ratingFilter element not found!");
+        return;
+    }
     
+    // Platform filter event listener
+    platformsFilter.addEventListener('change', function(){
+        const selectedplatforms = this.value;
+        console.log(" Selected platform:", selectedplatforms);
+        filterGamesByplatforms(selectedplatforms);
+    });
+    
+    // Rating filter event listener
+    ratingFilter.addEventListener('change', function(){
+        const selectedFilter = this.value;
+        console.log(" Selected rating:", selectedFilter);
+        filterGamesByGenre(selectedFilter);
+    });
+    
+    // Genre filter event listener
     genreFilter.addEventListener('change', function() {
-        const selectedGenre =this.value;
-        console.log(" Selected genre:", selectedGenre);
-        filterGamesByGenre(selectedGenre);
-    //     if (this.value === "action") {
-    //         console.log("🎮 Action games selected!");
-    //     } else if (this.value === "rpg") {
-    //         console.log("⚔️ RPG games selected!");
-    //     } else if (this.value === "") {
-    //         console.log("❌ No genre selected");
-    //     }
-     });
+        const selectedGenreValue = this.value;
+        console.log(" Selected genre:", selectedGenreValue);
+        filterGamesByGenre(selectedGenreValue);
+    });
     
-    console.log("✅ Event listener added successfully");
+    // Apply filters button event listener
+    if (applyFiltersBtn) {
+        applyFiltersBtn.addEventListener("click", () => {
+            selectedGenre = genreFilter ? genreFilter.value : '';
+            page = 1;
+
+            const params = new URLSearchParams();
+            params.set('page', page);
+            const trimmedSearch = inputvalue.trim();
+            if (trimmedSearch.length > 1) {
+                params.set('search', trimmedSearch);
+            }
+            if (selectedGenre) {
+                params.set('genres', selectedGenre);
+            }
+
+            url = `${BASE_API_URL}?${params.toString()}`;
+
+            button.remove();
+            getdata().then(data => {
+                const results = data && data.results ? data.results : [];
+                cleargamecontainer()
+                results.forEach((game, index) => {
+                    if (index < 12) {
+                        creatgamecard(game);
+                    }
+                });
+                document.body.append(button)
+            }).catch(error => {
+                console.error(error.message);
+                document.body.append(button)
+            });
+        });
+    }
+    
+    console.log("✅ Event listeners added successfully");
 });
 
 
@@ -439,10 +493,12 @@ input.addEventListener("input",(e)=>{
  })
  
 
-const genreFilter = document.getElementById("genreFilter");
-const applyFiltersBtn = document.getElementById("applyFiltersBtn");
+// This code is now handled in the DOMContentLoaded listener above
+// Keeping this as a fallback for when DOM is already loaded
+let genreFilter = document.getElementById("genreFilter");
+let applyFiltersBtn = document.getElementById("applyFiltersBtn");
 
-if (applyFiltersBtn) {
+if (applyFiltersBtn && genreFilter) {
     applyFiltersBtn.addEventListener("click", () => {
         selectedGenre = genreFilter ? genreFilter.value : '';
         page = 1;
@@ -704,9 +760,9 @@ function filterGamesByGenre(selectedGenre) {
         });
         
         // Re-add load more button if needed
-        if (filteredGames.length > 5) {
+       
             document.body.append(button);
-        }
+        
     });
 }
 
@@ -746,4 +802,66 @@ function getAllUniqueGenres(data) {
     });
     
     return Array.from(allGenres);
+}
+
+///////filter by platform
+function filterGamesByplatforms(selectedplatforms) {
+    getdata().then(data => {
+        cleargamecontainer();
+        removeLoadMoreButton();
+        
+        const filteredGames = data.results.filter(game => {
+            return hasplatforms(game, selectedplatforms);
+        });
+        
+        console.log(`Found ${filteredGames.length} games with platform: ${selectedplatforms}`);
+        
+        filteredGames.forEach((game) => {
+            creatgamecard(game);
+        });
+
+        // Only add button if there are more games to load
+        
+            document.body.append(button);
+        
+    });
+}
+
+function hasplatforms(game, selectedplatforms) {
+    if (!selectedplatforms) return true; // Show all if no platform selected
+    
+    let gamePlatforms = getAllPlatformNames(game);
+    console.log("1 game platform" , gamePlatforms)
+    // Check if the selected platform exists in game's platforms
+    return gamePlatforms.some(platformName => 
+        platformName.toLowerCase() === selectedplatforms.toLowerCase()
+    );
+}
+
+// Function that returns ALL platform names for a game
+function getAllPlatformNames(game) {
+    if (!game.platforms || !Array.isArray(game.platforms)) {
+        return [];
+    }
+    
+    return game.platforms.map(platform => 
+        platform.platform.name.toLowerCase()
+    );
+}
+
+// Alternative: Get all unique platforms from all games
+function getAllUniquePlatforms(data) {
+    let allPlatforms = new Set();
+    
+    data.results.forEach(game => {
+        if (game.platforms && Array.isArray(game.platforms)) {
+            game.platforms.forEach(platform => {
+                if (platform.platform && platform.platform.name) {
+                    allPlatforms.add(platform.platform.name.toLowerCase());
+                }
+            });
+        }
+    });
+    
+    return Array.from(allPlatforms);
 }
