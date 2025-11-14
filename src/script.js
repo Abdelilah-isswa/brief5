@@ -771,7 +771,8 @@ function hasGenre(game, selectedGenre) {
     if (!selectedGenre) return true; // Show all if no genre selected
     
     let gameGenres = getAllGenreNames(game);
-    
+    console.log("genre")
+    console.log(gameGenres)
     // Check if the selected genre exists in game's genres
     return gameGenres.some(genreName => 
         genreName.toLowerCase() === selectedGenre.toLowerCase()
@@ -817,6 +818,8 @@ function filterGamesByplatforms(selectedplatforms) {
         console.log(`Found ${filteredGames.length} games with platform: ${selectedplatforms}`);
         
         filteredGames.forEach((game) => {
+            console.log("plat")
+            console.log(game)
             creatgamecard(game);
         });
 
@@ -831,7 +834,8 @@ function hasplatforms(game, selectedplatforms) {
     if (!selectedplatforms) return true; // Show all if no platform selected
     
     let gamePlatforms = getAllPlatformNames(game);
-    console.log("1 game platform" , gamePlatforms)
+    console.log("1 game platform" )
+    console.log( gamePlatforms)
     // Check if the selected platform exists in game's platforms
     return gamePlatforms.some(platformName => 
         platformName.toLowerCase() === selectedplatforms.toLowerCase()
@@ -864,4 +868,70 @@ function getAllUniquePlatforms(data) {
     });
     
     return Array.from(allPlatforms);
+}
+
+//////filtere les game par rating 
+
+
+function filterGamesByRating(selectedRating) {
+    getdata().then(data => {
+        cleargamecontainer();
+        removeLoadMoreButton();
+        
+        const filteredGames = data.results.filter(game => {
+           console.log("filter:" + game)
+            return hasRating(game, selectedRating);
+        });
+         console.log(filteredGames)
+        console.log(`Found ${filteredGames.length} games with rating: ${selectedRating}+`);
+        
+        filteredGames.forEach((game) => {
+            console.log("this")
+            console.log( game)
+            creatgamecard(game);
+        });
+
+      
+            document.body.append(button);
+       
+    });
+}
+
+function hasRating(game, selectedRating) {
+    if (!selectedRating) return true; // Show all if no rating selected
+    
+
+
+
+
+
+
+
+    // Convert selectedRating to number for comparison
+    const minRating = parseFloat(selectedRating);
+    
+    // Check if game has rating and meets the minimum
+    if (!game.rating) return false;
+    
+    return game.rating >= minRating;
+}
+
+// Event listener for rating filter
+ratingFilter.addEventListener('change', function(){
+    const selectedRating = this.value;
+    console.log("Selected rating:", selectedRating);
+    filterGamesByRating(selectedRating);
+});
+
+// Function to get all unique ratings from games (for debugging)
+function getAllUniqueRatings(data) {
+    let allRatings = new Set();
+    
+    data.results.forEach(game => {
+        if (game.rating !== null && game.rating !== undefined) {
+            allRatings.add(game.rating);
+        }
+    });
+    
+    return Array.from(allRatings).sort((a, b) => a - b);
 }
